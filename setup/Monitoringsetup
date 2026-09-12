@@ -1,0 +1,26 @@
+docker network create redis-network
+
+mkdir prometheus
+vi prometheus/prometheus.yml
+
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'spring-boot'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['redis-app:8080']
+      
+docker run -d \
+  --name prometheus \
+  --network redis-network \
+  -p 9090:9090 \
+  -v $(pwd)/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro \
+  prom/prometheus
+  
+  docker run -d \
+  --name grafana \
+  --network redis-network \
+  -p 3000:3000 \
+  grafana/grafana      

@@ -1,0 +1,5 @@
+
+Tracing:16686
+RabbitMQServer:15672
+application
+monitoring:3000 and 9090
